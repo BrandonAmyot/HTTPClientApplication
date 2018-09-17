@@ -17,7 +17,6 @@ public class Demo {
 		for (String line; (line = reader.readLine()) != null;) {
 			System.out.println(line);
 		}
-//		hh;
 		    
 		Map <String, List<String>> info = url.openConnection().getHeaderFields();
 		
