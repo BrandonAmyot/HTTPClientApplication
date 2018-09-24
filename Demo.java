@@ -12,8 +12,7 @@ public class Demo {
 //		URL url = new URL("http://httpbin.org/get?course=networking&assignment=1");
 //		URL url = new URL("http://httpbin.org/get?course=networking&assignment=1");
 		
-//		GETMETHOD.get(url);
-		
+		// GET request
         URLConnection yc = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
         String inputLine;
@@ -25,15 +24,24 @@ public class Demo {
 //		for (String line; (line = reader.readLine()) != null;) {
 //			System.out.println(line);
 //		}
-//		    
-//		Map <String, List<String>> info = url.openConnection().getHeaderFields();
-//		
-//		for (Map.Entry<String, List<String>> line : info.entrySet()) {
-//			if(line.getKey() != null)
-//				System.out.println(line.getKey() + ": " + line.getValue());
-//			else
-//				System.out.println(line.getValue());
-//		}
+   
+        // -v command
+		Map <String, List<String>> info = url.openConnection().getHeaderFields();
+		
+		for (Map.Entry<String, List<String>> line : info.entrySet()) {
+			if(line.getKey() != null)
+				System.out.println(line.getKey() + ": " + line.getValue());
+			else
+				System.out.println(line.getValue());
+		}
+		
+		// -h command
+		Map <String, List<String>> headers = url.openConnection().getHeaderFields();
+				
+		for (Map.Entry<String, List<String>> line : headers.entrySet()) {
+			if(line.getKey() != null)
+				System.out.println("Key: " + line.getKey() + "\tValue: " + line.getValue());
+		}
 		
 	}
 
