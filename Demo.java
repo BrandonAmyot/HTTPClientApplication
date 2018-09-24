@@ -7,23 +7,23 @@ public class Demo {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String hostName = "http://httpbin.org/get?course=networking&assignment=1";
-		int portNumber = 80;
+		final int portNumber = 80;
+		System.out.println("Creating server socket on port " + portNumber);
+		ServerSocket serverSocket = new ServerSocket(portNumber);
+		while (true) {
+			Socket socket = serverSocket.accept();
+			OutputStream os = socket.getOutputStream();
+			PrintWriter pw = new PrintWriter(os, true);
+			pw.println("What's you name?");
 
-		try {
-		   Socket echoSocket = new Socket(hostName, portNumber);
-//		   PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-		   BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-		   BufferedReader stdIn =new BufferedReader(new InputStreamReader(System.in));
-		   
-		 
-		   for(String line; (line = in.readLine()) != null;) {
-			   System.out.println(line);
-		   }
-		   in.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String str = br.readLine();
+
+			pw.println("Hello, " + str);
+			pw.close();
+			socket.close();
+
+			System.out.println("Just said hello to:" + str);
 		}
 		
 		// GET request
