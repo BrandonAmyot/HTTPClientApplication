@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -7,26 +11,29 @@ public class httpc {
 
 	public static void main(String[] args) {
 		
-		try {
-		Socket mySocket = new Socket("www.mock-server.com", 80);
-	    InputStream input = mySocket.getInputStream();
-	    PrintWriter pw = new PrintWriter(mySocket.getOutputStream());
-	    pw.println("GET / HTTP/1.0");
-	    pw.println();
-	    pw.flush();
-	    byte[] buffer = new byte[1024];
-	    int read;
-	    while((read = input.read(buffer)) != -1) {
-	        String output = new String(buffer, 0, read);
-	        System.out.print(output);
-	        System.out.flush();
-	    };
-	    mySocket.close();
+		try {	
+			Socket mySocket = new Socket("www.mock-server.com", 80);
+			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
+			out.println("GET / HTTP/1.0");
+			out.println();
+			out.flush();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
+			
+			String userInput;
+			
+			while((userInput = in.readLine()) != null) {
+				System.out.println(userInput);
+			}
+			
+			in.close();
+			mySocket.close();
 		}
 		
-		catch(Exception e) {
+		catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 }
