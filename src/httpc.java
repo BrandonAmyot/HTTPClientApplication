@@ -3,24 +3,34 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 
 
 public class httpc {
 
 	public static void main(String[] args) {
 		
-		String address = "www.concordia.ca";
+		URL url;
+		try {
+			url = new URL("http://httpbin.org/post");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		String hostName = url.getHost();
+		int port = 80;
 		
 		try {	
-			// Create a socket and connection
-			Socket mySocket = new Socket(address, 80);
+			Socket mySocket = new Socket(hostName, port);
 			
 			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
 			
 			// Sends and HTTP request to the server
-			out.println("HEAD / HTTP/1.1");
-			out.println("Host: " + address);
+			out.println("POST " + url.getPath() + " HTTP/1.1");
+			out.println("Host: " + hostName);
 			out.println();
 			out.flush();
 			
