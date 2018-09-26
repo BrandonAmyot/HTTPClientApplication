@@ -14,7 +14,7 @@ public class httpc {
 		
 		URL url;
 		try {
-			url = new URL("http://httpbin.org/post");
+			url = new URL("http://www.google.com/");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -28,15 +28,13 @@ public class httpc {
 			
 			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
 			
-			// Sends and HTTP request to the server
-			out.println("POST " + url.getPath() + " HTTP/1.1");
+			out.println("HEAD " + url.getPath() + " HTTP/1.1");
 			out.println("Host: " + hostName);
 			out.println();
 			out.flush();
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 			
-			// Read the response
 			String userInput;
 			while((userInput = in.readLine()) != null) {
 				System.out.println(userInput);
