@@ -10,12 +10,14 @@ public class httpc {
 
 	public static void main(String[] args) {
 		
+		String url = "www.concordia.ca";
+		
 		try {	
-			Socket mySocket = new Socket("www.httpbin.org", 80);
+			Socket mySocket = new Socket(url, 80);
 			
 			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
-			out.println("GET / HTTP/1.1");
-			out.println("Host: www.httpbin.org");
+			out.println("HEAD / HTTP/1.1");
+			out.println("Host: " + url);
 			out.println();
 			out.flush();
 			
