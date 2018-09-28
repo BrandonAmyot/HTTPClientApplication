@@ -10,9 +10,12 @@ import java.net.URL;
 public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	private static boolean headerKey;
+	private static String headerKey;
+	private static String headerValue;
 	private static boolean inlineData = false;
+	private static String dataName;
 	private static boolean fileName = false;
+	private static String file;
 	public static boolean isVerbose() {
 		return verbose;
 	}

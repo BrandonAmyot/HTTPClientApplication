@@ -10,7 +10,8 @@ import java.net.URL;
 public class Get {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	private static boolean headerKey;
+	private static String headerKey;
+	private static String headerValue;
 	
 	public static boolean isVerbose() {
 		return verbose;
@@ -30,7 +31,6 @@ public class Get {
 		try {
 			url = new URL("http://httpbin.org/");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
 		}
@@ -47,11 +47,22 @@ public class Get {
 			out.println();
 			out.flush();
 			
+			// Get request
 			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 			
 			String userInput;
 			while((userInput = in.readLine()) != null) {
 				System.out.println(userInput);
+			}
+			
+			// if there is a verbose command, return header fields
+			if(verbose) {
+				
+			}
+			
+			// if there is a header command, return specific key and value
+			if(headers) {
+				
 			}
 			
 			in.close();
