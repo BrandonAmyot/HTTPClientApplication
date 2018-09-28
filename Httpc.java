@@ -6,46 +6,109 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Scanner;
 
 public class Httpc {
 	
-	public static void main(String[] args) throws Exception {
-		
-		URL url;
-		try {
-			url = new URL("http://httpbin.org/");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private static boolean getReq = false;
+	private static boolean postReq = false;
+	
+	public static void parseURL(String urlLong) {		
+		if(urlLong.matches(".*get?.*")) {
+			getReq = true;
+			
+			if(urlLong.matches(".*-v.*")) {
+				Get.setVerbose(true);
+				System.out.println("verbose");
+			}
+			if(urlLong.matches(".*-h.*")) {
+				Get.setHeaders(true);
+				System.out.println("headers");
+
+				// need to extract key and value
+			}
 			return;
 		}
-		String hostName = url.getHost();
-		int port = 80;
-		
-		try {	
-			Socket mySocket = new Socket(hostName, port);
+		else if(urlLong.matches(".*post?.*")) {
+			postReq = true;
 			
-			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
-			
-			out.println("HEAD " + url.getPath() + " HTTP/1.1");
-			out.println("Host: " + hostName);
-			out.println();
-			out.flush();
-			
-			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
-			
-			String userInput;
-			while((userInput = in.readLine()) != null) {
-				System.out.println(userInput);
+			if(urlLong.matches(".*-v.*")) {
+				Post.setVerbose(true);
+				System.out.println("verbose");
 			}
-			
-			in.close();
-			mySocket.close();
+			if(urlLong.matches(".*-h.*")) {
+				Post.setHeaders(true);
+				System.out.println("headers");
+				
+				// need to extract key and value
+			}
+			if(urlLong.matches(".*-d.*")) {
+				Post.setInlineData(true);
+				System.out.println("inlineData");
+				
+				// need to extract string value
+			}
+			if(urlLong.matches(".*-f.*")) {
+				Post.setFileName(true);
+				System.out.println("fileName");
+				
+				// need to extract file
+			}			
+		}
+	}
+	
+	
+	public static void main(String[] args) throws Exception {
+		
+		String urlLong = "httpc get -v 'http://httpbin.org/get?course=networking&assignmen";
+		
+		parseURL(urlLong);
+		
+		if(getReq) {
+			Get.doGet(urlLong);
+		}
+		else if(postReq) {
+			Post.doPost(urlLong);
+		}
+		else {
+			System.out.println("Oops something went wrong!");
 		}
 		
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+//		URL url;
+//		try {
+//			url = new URL("http://httpbin.org/");
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return;
+//		}
+//		String hostName = url.getHost();
+//		int port = 80;
+//		
+//		try {	
+//			Socket mySocket = new Socket(hostName, port);
+//			
+//			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
+//			
+//			out.println("HEAD " + url.getPath() + " HTTP/1.1");
+//			out.println("Host: " + hostName);
+//			out.println();
+//			out.flush();
+//			
+//			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
+//			
+//			String userInput;
+//			while((userInput = in.readLine()) != null) {
+//				System.out.println(userInput);
+//			}
+//			
+//			in.close();
+//			mySocket.close();
+//		}
+//		
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 //		URL url = new URL("http://httpbin.org/get?course=networking&assignment=1");
 //		String hostName = "http://httpbin.org/get?course=networking&assignment=1";
@@ -106,5 +169,6 @@ public class Httpc {
 //		}
 		
 	}
+
 
 }
