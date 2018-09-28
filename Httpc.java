@@ -1,11 +1,3 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.URL;
 
 public class Httpc {
 	
@@ -13,7 +5,7 @@ public class Httpc {
 	private static boolean postReq = false;
 	
 	public static void parseURL(String urlLong) {		
-		if(urlLong.matches(".*get?.*")) {
+		if(urlLong.matches(".*httpc get?.*")) {
 			getReq = true;
 			
 			if(urlLong.matches(".*-v.*")) {
@@ -28,7 +20,7 @@ public class Httpc {
 			}
 			return;
 		}
-		else if(urlLong.matches(".*post?.*")) {
+		else if(urlLong.matches(".*httpc post?.*")) {
 			postReq = true;
 			
 			if(urlLong.matches(".*-v.*")) {
@@ -59,14 +51,16 @@ public class Httpc {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String urlLong = "httpc get -v 'http://httpbin.org/get?course=networking&assignmen";
+		String urlLong = "httpc post -v 'http://httpbin.org/get?course=networking&assignmen";
 		
 		parseURL(urlLong);
 		
 		if(getReq) {
+			System.out.println("get request executing...\n");
 			Get.doGet(urlLong);
 		}
 		else if(postReq) {
+			System.out.println("post request executing...\n");
 			Post.doPost(urlLong);
 		}
 		else {
