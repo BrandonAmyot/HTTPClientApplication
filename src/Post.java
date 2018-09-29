@@ -41,41 +41,31 @@ public class Post {
 		Post.fileName = fileName;
 	}
 	
-	public static void doPost(String urlLong) {
-		URL url;
-		try {
-			url = new URL("http://httpbin.org/");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return;
-		}
+	public static void doPost(String urlShort) throws Exception {
+
+		URL	url = new URL(urlShort);
+
 		String hostName = url.getHost();
 		int port = 80;
+	
+		Socket mySocket = new Socket(hostName, port);
 		
-		try {	
-			Socket mySocket = new Socket(hostName, port);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
 			
-			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
+		out.println("POST " + url + " HTTP/1.1");
+		out.println("Host: " + hostName);
+		out.println();
+		out.flush();
 			
-			out.println("POST " + url.getPath() + " HTTP/1.1");
-			out.println("Host: " + hostName);
-			out.println();
-			out.flush();
+		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 			
-			BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
-			
-			String userInput;
-			while((userInput = in.readLine()) != null) {
-				System.out.println(userInput);
-			}
-			
-			in.close();
-			mySocket.close();
+		String userInput;
+		while((userInput = in.readLine()) != null) {
+			System.out.println(userInput);
 		}
-		
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+		in.close();
+		mySocket.close();
 	}
 	
 }
