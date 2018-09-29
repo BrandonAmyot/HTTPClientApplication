@@ -1,3 +1,15 @@
+<<<<<<< HEAD
 /Demo.class
 /GETMETHOD.class
 /POSTMETHOD.class
+=======
+/Httpc.class
+/test.class
+
+.project
+.classpath
+/doGet.class
+/doPost.class
+/Get.class
+/Post.class
+>>>>>>> master
