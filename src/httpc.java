@@ -4,7 +4,8 @@ public class Httpc {
 	private static boolean getReq = false;
 	private static boolean postReq = false;
 	
-	public static void parseURL(String urlLong) {		
+	public static void parseURL(String urlLong) {
+		
 		if(urlLong.matches(".*httpc get?.*")) {
 			getReq = true;
 			
@@ -51,17 +52,19 @@ public class Httpc {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String urlLong = "httpc post -v 'http://httpbin.org/get?course=networking&assignmen";
+		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
 		
 		parseURL(urlLong);
 		
+		String urlShort = urlLong.substring(urlLong.lastIndexOf(" ")+1);
+		
 		if(getReq) {
 			System.out.println("get request executing...\n");
-			Get.doGet(urlLong);
+			Get.doGet(urlShort);
 		}
 		else if(postReq) {
 			System.out.println("post request executing...\n");
-			Post.doPost(urlLong);
+			Post.doPost(urlShort);
 		}
 		else {
 			System.out.println("Oops something went wrong!");
