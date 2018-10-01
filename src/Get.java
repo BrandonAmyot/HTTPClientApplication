@@ -37,13 +37,19 @@ public class Get {
 			
 		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 
 			
-		out.println("GET " + url + " HTTP/1.1");
+		// if there is a verbose command, return header fields
+		if(verbose) {
+			out.println("GET " + url + " HTTP/1.1");			
+		}
+		else {
+			out.println("HEAD " + url + " HTTP/1.1");			
+		}
 		out.println("Host: " + hostName);
 		out.println();
 		out.flush();
 
 			
-		// Get request
+		// Print the get request
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 			
 		String userInput;
@@ -51,10 +57,6 @@ public class Get {
 			System.out.println(userInput);
 		}
 			
-		// if there is a verbose command, return header fields
-		if(verbose) {
-				
-		}
 			
 		// if there is a header command, return specific key and value
 		if(headers) {
