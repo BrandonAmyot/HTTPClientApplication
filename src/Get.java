@@ -42,7 +42,7 @@ public class Get {
 			out.println("GET " + url + " HTTP/1.1");			
 		}
 		else {
-			out.println("HEAD " + url + " HTTP/1.1");			
+			out.println("HEAD " + url + " HTTP/1.1");
 		}
 		out.println("Host: " + hostName);
 		out.println();

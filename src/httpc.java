@@ -52,9 +52,9 @@ public class httpc {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
+//		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
-//		String urlLong = "httpc post -h Content-Type:application/json --d '{\"Assignment\": 1}' http://httpbin.org/pos";
+		String urlLong = "httpc post -h Content-Type:application/json --d '{\"Assignment\": 1}' http://httpbin.org/post";
 		
 		
 		parseURL(urlLong);
