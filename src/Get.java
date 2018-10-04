@@ -6,11 +6,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
+
+
 public class Get {
 	private static boolean verbose = false;
-	private static boolean headers = false;
-	public static String[] headerKey;
-	public static String[] headerValue;
+	private static boolean headers = false;	
+	public static String header;
 	
 	// Accessor and Mutator methods
 	public static boolean isVerbose() {
@@ -37,9 +39,13 @@ public class Get {
 			
 		// send request
 		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 	
-
+		
 		out.println("GET " + url + " HTTP/1.1");			
 		out.println("Host: " + hostName);
+		// if there is a header command, return specific key and value
+		if(headers) {
+			out.println(header);
+		}
 		out.println();
 		out.flush();
 
@@ -60,22 +66,15 @@ public class Get {
 			}
 		}
 			
-		// if there is a header command, return specific key and value
-		if(headers) {
-				
-		}
-			
 		in.close();
 		mySocket.close();
 
 	}
 	
 	public static void addHeaders(String url) {
-		
-		headerKey = url.split(" |:");
-		
-		for (String x : headerKey)
-			System.out.println(x);
+		String temp = StringUtils.substringAfter(url, "-h ");
+		header = StringUtils.substringBefore(temp, " ");
+		System.out.println("Header to be added: " + header);
 		
 	}
 	
