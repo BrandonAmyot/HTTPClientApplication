@@ -15,6 +15,7 @@ public class httpc {
 			}
 			if(urlLong.matches(".*-h.*")) {
 				Get.setHeaders(true);
+				Get.addHeaders(urlLong);
 				System.out.println("headers"); // remove once working
 
 				// need to extract key and value
@@ -54,7 +55,12 @@ public class httpc {
 		
 //		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
+<<<<<<< HEAD
 		String urlLong = "httpc post -h Content-Type:application/json --d '{\"Assignment\": 1}' http://httpbin.org/post";
+=======
+		String urlLong = "httpc get -v -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
+//		String urlLong = "httpc post -h Content-Type:application/json --d '{\"Assignment\": 1}' http://httpbin.org/pos";
+>>>>>>> master
 		
 		
 		parseURL(urlLong);

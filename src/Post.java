@@ -10,12 +10,15 @@ import java.net.URL;
 public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	private static String headerKey;
-	private static String headerValue;
+	public static String[] headerKey;
+	public static String[] headerValue;
+	
 	private static boolean inlineData = false;
 	private static String dataName;
 	private static boolean fileName = false;
 	private static String file;
+	
+	// Accessor and Mutator Methods
 	public static boolean isVerbose() {
 		return verbose;
 	}
@@ -59,9 +62,17 @@ public class Post {
 			
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 			
-		String userInput;
-		while((userInput = in.readLine()) != null) {
-			System.out.println(userInput);
+		String response;
+		boolean messageBody = false;
+		while((response = in.readLine()) != null) {
+			if(verbose)
+				System.out.println(response);
+			else {
+				if(messageBody)
+					System.out.println(response);
+				if(response.equals(""))
+					messageBody = true;
+			}
 		}
 			
 		in.close();
