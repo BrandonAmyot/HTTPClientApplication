@@ -11,11 +11,11 @@ public class httpc {
 			
 			if(urlLong.matches(".*-v.*")) {
 				Get.setVerbose(true);
-				System.out.println("verbose");
+				System.out.println("verbose"); // remove once working
 			}
 			if(urlLong.matches(".*-h.*")) {
 				Get.setHeaders(true);
-				System.out.println("headers");
+				System.out.println("headers"); // remove once working
 
 				// need to extract key and value
 			}
@@ -26,23 +26,23 @@ public class httpc {
 			
 			if(urlLong.matches(".*-v.*")) {
 				Post.setVerbose(true);
-				System.out.println("verbose");
+				System.out.println("verbose"); // remove once working
 			}
 			if(urlLong.matches(".*-h.*")) {
 				Post.setHeaders(true);
-				System.out.println("headers");
+				System.out.println("headers"); // remove once working
 				
 				// need to extract key and value
 			}
 			if(urlLong.matches(".*-d.*")) {
 				Post.setInlineData(true);
-				System.out.println("inlineData");
+				System.out.println("inlineData"); // remove once working
 				
 				// need to extract data string value
 			}
 			if(urlLong.matches(".*-f.*")) {
 				Post.setFileName(true);
-				System.out.println("fileName");
+				System.out.println("fileName"); // remove once working
 				
 				// need to extract file
 			}			
