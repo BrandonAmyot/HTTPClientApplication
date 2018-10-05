@@ -59,9 +59,12 @@ public class Post {
 		out.println("POST " + url + " HTTP/1.1");
 		out.println("Host: " + hostName);
 		// if there is a header command, return specific key and value
-		if(headers) {
+		if(headers)
 			out.println(header);
-		}
+		out.println();
+		// if there is inline data command, return data value
+//		if(inlineData)
+//			out.println(dataName);
 		out.println();
 		out.flush();
 			
@@ -88,6 +91,14 @@ public class Post {
 		String temp = StringUtils.substringAfter(url, "-h ");
 		header = StringUtils.substringBefore(temp, " ");
 		System.out.println("Header to be added: " + header);
+		
+	}
+	
+	public static void addData(String url) {
+//		dataName = "";
+		String temp = StringUtils.substringAfter(url, "{");
+		dataName = StringUtils.substringBefore(temp, "}");
+		System.out.println("Data to be added: " + dataName);
 		
 	}
 	

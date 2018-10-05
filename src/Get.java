@@ -48,7 +48,6 @@ public class Get {
 		}
 		out.println();
 		out.flush();
-
 			
 		// Print the get request
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
@@ -64,18 +63,15 @@ public class Get {
 				if(response.equals(""))
 					messageBody = true;
 			}
-		}
-			
+		}	
 		in.close();
 		mySocket.close();
-
 	}
 	
 	public static void addHeaders(String url) {
 		String temp = StringUtils.substringAfter(url, "-h ");
 		header = StringUtils.substringBefore(temp, " ");
 		System.out.println("Header to be added: " + header);
-		
 	}
 	
 	
