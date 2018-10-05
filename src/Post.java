@@ -7,11 +7,12 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	public static String[] headerKey;
-	public static String[] headerValue;
+	public static String header;
 	
 	private static boolean inlineData = false;
 	private static String dataName;
@@ -57,6 +58,10 @@ public class Post {
 			
 		out.println("POST " + url + " HTTP/1.1");
 		out.println("Host: " + hostName);
+		// if there is a header command, return specific key and value
+		if(headers) {
+			out.println(header);
+		}
 		out.println();
 		out.flush();
 			
@@ -77,6 +82,13 @@ public class Post {
 			
 		in.close();
 		mySocket.close();
+	}
+	
+	public static void addHeaders(String url) {
+		String temp = StringUtils.substringAfter(url, "-h ");
+		header = StringUtils.substringBefore(temp, " ");
+		System.out.println("Header to be added: " + header);
+		
 	}
 	
 }
