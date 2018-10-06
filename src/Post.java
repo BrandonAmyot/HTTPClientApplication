@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 
@@ -11,11 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	private static String headerContent;
+	public static String header;
+	
 	private static boolean inlineData = false;
-	private static String dataContent = "";
-	private static boolean isFile = false;
-	private static String fileContents = "";
+	private static String dataName;
+	private static boolean fileName = false;
+	private static String file;
 	
 	// Accessor and Mutator Methods
 	public static boolean isVerbose() {
@@ -37,13 +39,12 @@ public class Post {
 		Post.inlineData = inlineData;
 	}
 	public static boolean isFileName() {
-		return isFile;
+		return fileName;
 	}
 	public static void setFileName(boolean fileName) {
-		Post.isFile = fileName;
+		Post.fileName = fileName;
 	}
 	
-	// Make POST request
 	public static void doPost(String urlShort) throws Exception {
 
 		URL	url = new URL(urlShort);
@@ -57,25 +58,14 @@ public class Post {
 			
 		out.println("POST " + url + " HTTP/1.1");
 		out.println("Host: " + hostName);
-		
-		// send content-length of inline data or file
-		if(inlineData)
-			out.println("Content-Length: " + dataContent.length());
-		else if(isFile)
-			out.println("Content-Length: " + fileContents.length());
 		// if there is a header command, return specific key and value
 		if(headers)
-			out.println(headerContent);
+			out.println(header);
 		out.println();
-			
 		// if there is inline data command, return data value
-		// or if there is a file, return contents of file
-		if(inlineData) {
-			out.println(dataContent);
-		}
-		else if(isFile) {
-			out.println(fileContents);
-		}
+//		if(inlineData)
+//			out.println(dataName);
+		out.println();
 		out.flush();
 			
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
@@ -99,17 +89,17 @@ public class Post {
 	
 	public static void addHeaders(String url) {
 		String temp = StringUtils.substringAfter(url, "-h ");
-		headerContent = StringUtils.substringBefore(temp, " ");		
+		header = StringUtils.substringBefore(temp, " ");
+		System.out.println("Header to be added: " + header);
+		
 	}
 	
 	public static void addData(String url) {
+//		dataName = "";
 		String temp = StringUtils.substringAfter(url, "{");
-		dataContent = "{" + StringUtils.substringBefore(temp, "}") + "}";		
-	}
-	
-	public static void addFile(String url) {
-		String temp = StringUtils.substringAfter(url, "-f ");
-		fileContents = StringUtils.substringBefore(temp, " ");
+		dataName = StringUtils.substringBefore(temp, "}");
+		System.out.println("Data to be added: " + dataName);
+		
 	}
 	
 }
