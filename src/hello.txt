@@ -1,0 +1,25 @@
+http://httpbin.org/get?course=networking&assignment=1
+get request executing...
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Date: Sat, 06 Oct 2018 03:09:04 GMT
+Content-Type: application/json
+Content-Length: 244
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Via: 1.1 vegur
+
+{
+  "args": {
+    "assignment": "1", 
+    "course": "networking"
+  }, 
+  "headers": {
+    "Connection": "close", 
+    "Host": "httpbin.org"
+  }, 
+  "origin": "198.84.250.106", 
+  "url": "http://httpbin.org/get?course=networking&assignment=1"
+}
