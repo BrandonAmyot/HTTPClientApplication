@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Get {
 	private static boolean verbose = false;
 	private static boolean headers = false;	
-	public static String header;
+	private static String header;
 	
 	// Accessor and Mutator methods
 	public static boolean isVerbose() {
@@ -28,6 +28,7 @@ public class Get {
 		Get.headers = headers;
 	}
 	
+	// Make GET request
 	public static void doGet(String urlShort) throws Exception {
 		
 		URL url = new URL(urlShort);
@@ -54,6 +55,7 @@ public class Get {
 			
 		String response;
 		boolean messageBody = false;
+		
 		while((response = in.readLine()) != null) {
 			if(verbose)
 				System.out.println(response);
@@ -63,7 +65,8 @@ public class Get {
 				if(response.equals(""))
 					messageBody = true;
 			}
-		}	
+		}				
+	
 		in.close();
 		mySocket.close();
 	}
@@ -71,9 +74,5 @@ public class Get {
 	public static void addHeaders(String url) {
 		String temp = StringUtils.substringAfter(url, "-h ");
 		header = StringUtils.substringBefore(temp, " ");
-		System.out.println("Header to be added: " + header);
 	}
-	
-	
-	
 }
