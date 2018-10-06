@@ -60,7 +60,7 @@ public class httpc {
 	
 	public static void main(String[] args) throws Exception {
 		
-//		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
+		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
@@ -71,7 +71,7 @@ public class httpc {
 //		String urlLong = "httpc post -v -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
 		
 		// bonus textfile output
-		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
+//		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
 
 		parseURL(urlLong);
 		if(isTextOut) {
