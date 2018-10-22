@@ -7,19 +7,24 @@ import java.net.Socket;
 
 public class https {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args){
 //https://javarevisited.blogspot.com/2015/06/how-to-create-http-server-in-java-serversocket-example.html
+		try {
 		ServerSocket server = new ServerSocket(8080);
         System.out.println("Listening for connection on port 8080 ....");
-        while (true) {
-            Socket clientSocket = server.accept();
-            InputStreamReader isr =  new InputStreamReader(clientSocket.getInputStream());
-            BufferedReader reader = new BufferedReader(isr);
-            String line = reader.readLine();            
-            while (!line.isEmpty()) {
-                System.out.println(line);
-                line = reader.readLine();
+            while (true) {
+                Socket clientSocket = server.accept();
+                InputStreamReader isr =  new InputStreamReader(clientSocket.getInputStream());
+                BufferedReader reader = new BufferedReader(isr);
+                String line = reader.readLine();            
+                while (!line.isEmpty()) {
+                    System.out.println(line);
+                    line = reader.readLine();
+                }
             }
+        }
+        catch (IOException e) {
+        	System.out.println(e);
         }
 // ORACLE WEBSITE
 //		int portNumber = 8080;
