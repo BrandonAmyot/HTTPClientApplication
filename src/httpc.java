@@ -73,7 +73,7 @@ public class httpc {
 		// bonus textfile output
 //		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
 
-		String urlLong = "httpc get localhost:8080";
+		String urlLong = "httpc get http://localhost:80/";
 		
 		parseURL(urlLong);
 		if(isTextOut) {

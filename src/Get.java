@@ -31,22 +31,22 @@ public class Get {
 	// Make GET request
 	public static void doGet(String urlShort) throws Exception {
 		
-//		URL url = new URL(urlShort);
+		URL url = new URL(urlShort);
 
-//		String hostName = url.getHost();
+		String hostName = url.getHost();
 //		int port = 80;
 		
-		String hostName = "localhost";
-		int port = 8080;
-		String url = "127.0.0.1";
+//		String hostName = "localhost";
+		int port = 80;
+		//String url = "127.0.0.1";
 		
-		Socket mySocket = new Socket(url, port);
+		Socket mySocket = new Socket(hostName, port);
 		System.out.println(mySocket.isConnected());
 			
 		// send request
 		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(mySocket.getOutputStream()))); 	
 		
-		out.println("GET " + url + " HTTP/1.0");			
+		out.println("GET " + url + " HTTP/1.1");
 		out.println("Host: " + hostName);
 		// if there is a header command, return specific key and value
 		if(headers) {
@@ -57,7 +57,8 @@ public class Get {
 			
 		// Print the get request
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
-			
+		
+		System.out.println("response: \n");
 		String response;
 		boolean messageBody = false;
 		

@@ -10,17 +10,28 @@ public class https {
 	public static void main(String[] args){
 //https://javarevisited.blogspot.com/2015/06/how-to-create-http-server-in-java-serversocket-example.html
 		try {
-		ServerSocket server = new ServerSocket(8080);
-        System.out.println("Listening for connection on port 8080 ....");
+		ServerSocket server = new ServerSocket(80);
+        System.out.println("Listening for connection on port " + server.getLocalPort() + "...");
             while (true) {
                 Socket clientSocket = server.accept();
                 InputStreamReader isr =  new InputStreamReader(clientSocket.getInputStream());
                 BufferedReader reader = new BufferedReader(isr);
-                String line = reader.readLine();            
+                String line = reader.readLine();
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                
+                // Prepare response
+                String response = "HTTP/1.1 200 OK\r\n\r\n";
+                 
                 while (!line.isEmpty()) {
                     System.out.println(line);
                     line = reader.readLine();
                 }
+                
+//                out.println("HTTP/1.1 200 OK");
+//                out.println();
+                out.println(response);
+                out.flush();
+                clientSocket.close();
             }
         }
         catch (IOException e) {
