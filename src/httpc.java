@@ -24,6 +24,7 @@ public class httpc {
 			}
 			if(urlLong.matches(".*-v.*")) {
 				Get.setVerbose(true);
+				System.out.println("verbose");
 			}
 			if(urlLong.matches(".*-h.*")) {
 				Get.setHeaders(true);
@@ -73,7 +74,7 @@ public class httpc {
 		// bonus textfile output
 //		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
 
-		String urlLong = "httpc get http://localhost:80/";
+		String urlLong = "httpc get -v http://localhost:80/";
 		
 		parseURL(urlLong);
 		if(isTextOut) {

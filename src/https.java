@@ -20,15 +20,14 @@ public class https {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 
                 // Prepare response
-                String response = "HTTP/1.1 200 OK\r\n\r\n";
+                String response = "HTTP/1.0 200 OK\r\n";
                  
                 while (!line.isEmpty()) {
                     System.out.println(line);
+                    response += line + "\n";
                     line = reader.readLine();
                 }
                 
-//                out.println("HTTP/1.1 200 OK");
-//                out.println();
                 out.println(response);
                 out.flush();
                 clientSocket.close();
