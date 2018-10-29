@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Get {
 	private static boolean verbose = false;
 	private static boolean headers = false;	
-	private static String header;
+	private static String[] headerArr;
 	
 	// Accessor and Mutator methods
 	public static boolean isVerbose() {
@@ -49,7 +49,11 @@ public class Get {
 		out.println("Host: " + hostName);
 		// if there is a header command, return specific key and value
 		if(headers) {
-			out.println(header);
+			// i < array.length
+			for(int i =0; i < headerArr.length; i++) {
+				out.println(headerArr[i].toString());
+			}
+//			out.println(header);
 		}
 		out.println();
 		out.flush();
@@ -76,7 +80,16 @@ public class Get {
 	}
 	
 	public static void addHeaders(String url) {
-		String temp = StringUtils.substringAfter(url, "-h ");
-		header = StringUtils.substringBefore(temp, " ");
+		int counter = 0;
+		for(int i=0; i<url.length(); i++) {
+			
+			if(url.charAt(i)== '-' && url.charAt(i+1) == 'h') {
+				String temp = StringUtils.substring(url, i+2);
+				String header = StringUtils.substringBefore(temp, " ");
+				headerArr[counter] = temp;
+				counter++;
+				
+			}
+		}
 	}
 }
