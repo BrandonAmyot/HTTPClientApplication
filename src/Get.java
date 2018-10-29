@@ -5,6 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Get {
 	private static boolean verbose = false;
 	private static boolean headers = false;	
-	private static String[] headerArr;
+	private static ArrayList<String> headerArr = new ArrayList<String>();
 	
 	// Accessor and Mutator methods
 	public static boolean isVerbose() {
@@ -50,8 +51,8 @@ public class Get {
 		// if there is a header command, return specific key and value
 		if(headers) {
 			// i < array.length
-			for(int i =0; i < headerArr.length; i++) {
-				out.println(headerArr[i].toString());
+			for(int i =0; i < headerArr.size(); i++) {
+				out.println(headerArr.get(i).toString());
 			}
 //			out.println(header);
 		}
@@ -84,9 +85,9 @@ public class Get {
 		for(int i=0; i<url.length(); i++) {
 			
 			if(url.charAt(i)== '-' && url.charAt(i+1) == 'h') {
-				String temp = StringUtils.substring(url, i+2);
+				String temp = StringUtils.substring(url, i+3);
 				String header = StringUtils.substringBefore(temp, " ");
-				headerArr[counter] = temp;
+				headerArr.add(header);
 				counter++;
 				
 			}
