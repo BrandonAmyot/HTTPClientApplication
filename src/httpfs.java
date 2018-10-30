@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 public class httpfs {
 	public static void main(String[] args) {
 		
-		String serverDetails = "httpfs -p 80 -d ../directory";
+		String serverDetails = "httpfs -p 8080 -d ../directory";
 		
 		String tempPort = StringUtils.substringAfter(serverDetails, "-p ");
 		String stringPort = StringUtils.substringBefore(tempPort, " ");
@@ -46,13 +46,14 @@ public class httpfs {
         		String fileName = StringUtils.substringBefore(tempFileName, " ");
                 if(fileName != null) {
                 	try {
-            			File inputFile = new File(fileName);
+                		File inputFile = new File(path + "/" + fileName);
             			if(!inputFile.exists()) {            				
             				response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
 //            				out.println(response);
             			}
             			
-            			BufferedReader fileReader = new BufferedReader(new FileReader(fileName));
+            			BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
+            			//BufferedReader fileReader = new BufferedReader(new FileReader("../directory/foo.txt"));
             			while((line = fileReader.readLine()) != null) {
             				response += line;				
             			}
