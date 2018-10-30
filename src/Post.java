@@ -1,20 +1,30 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
-	private static String headerContent;
+	private static ArrayList<String> headerArr = new ArrayList<String>();
+	
 	private static boolean inlineData = false;
 	private static String dataContent = "";
-	private static boolean isFile = false;
+	
+	private static boolean hasFile = false;
+	private static String fileName = "";
 	private static String fileContents = "";
 	
 	// Accessor and Mutator Methods
@@ -33,14 +43,14 @@ public class Post {
 	public static boolean isInlineData() {
 		return inlineData;
 	}
-	public static void setInlineData(boolean inlineData) {
-		Post.inlineData = inlineData;
+	public static void setInlineData(boolean hasData) {
+		Post.inlineData = hasData;
 	}
 	public static boolean isFileName() {
-		return isFile;
+		return hasFile;
 	}
-	public static void setFileName(boolean fileName) {
-		Post.isFile = fileName;
+	public static void setIsFile(boolean hasFile) {
+		Post.hasFile = hasFile;
 	}
 	
 	// Make POST request
@@ -61,11 +71,14 @@ public class Post {
 		// send content-length of inline data or file
 		if(inlineData)
 			out.println("Content-Length: " + dataContent.length());
-		else if(isFile)
+		else if(hasFile)
 			out.println("Content-Length: " + fileContents.length());
 		// if there is a header command, return specific key and value
-		if(headers)
-			out.println(headerContent);
+		if(headers) {
+			for(int i = 0; i < headerArr.size(); i++) {
+				out.println(headerArr.get(i).toString());
+			}
+		}
 		out.println();
 			
 		// if there is inline data command, return data value
@@ -73,7 +86,7 @@ public class Post {
 		if(inlineData) {
 			out.println(dataContent);
 		}
-		else if(isFile) {
+		else if(hasFile) {
 			out.println(fileContents);
 		}
 		out.flush();
@@ -98,8 +111,14 @@ public class Post {
 	}
 	
 	public static void addHeaders(String url) {
-		String temp = StringUtils.substringAfter(url, "-h ");
-		headerContent = StringUtils.substringBefore(temp, " ");		
+		for(int i=0; i<url.length(); i++) {
+			
+			if(url.charAt(i)== '-' && url.charAt(i+1) == 'h') {
+				String temp = StringUtils.substring(url, i+3);
+				String header = StringUtils.substringBefore(temp, " ");
+				headerArr.add(header);
+			}
+		}
 	}
 	
 	public static void addData(String url) {
@@ -107,9 +126,25 @@ public class Post {
 		dataContent = "{" + StringUtils.substringBefore(temp, "}") + "}";		
 	}
 	
-	public static void addFile(String url) {
+	public static void readFile(String url) {
 		String temp = StringUtils.substringAfter(url, "-f ");
-		fileContents = StringUtils.substringBefore(temp, " ");
+		fileName = StringUtils.substringBefore(temp, " ");
+		
+		try {
+//			File inputFile = new File(fileName);
+//			if(!inputFile.exists())
+//				System.out.println("The file : " + fileName + " does not exist.");
+			
+			BufferedReader inputReader = new BufferedReader(new FileReader(fileName));
+			
+			while((temp = inputReader.readLine()) != null) {
+				fileContents += temp;				
+			}
+			inputReader.close();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
