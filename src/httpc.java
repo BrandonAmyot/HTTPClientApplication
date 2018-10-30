@@ -12,67 +12,26 @@ public class httpc {
 	private static boolean isTextOut = false;
 	private static String outputFileName;
 	
-	public static void parseURL(String urlLong) {
-		
-		if(urlLong.matches(".*httpc get?.*")) {
-			getReq = true;
-			
-			if(urlLong.matches(".*-o.*")) {
-				isTextOut = true;
-				String temp = StringUtils.substringAfter(urlLong, "-o ");
-				outputFileName = StringUtils.substringBefore(temp, " ");
-			}
-			if(urlLong.matches(".*-v.*")) {
-				Get.setVerbose(true);
-			}
-			if(urlLong.matches(".*-h.*")) {
-				Get.setHeaders(true);
-				Get.addHeaders(urlLong);
-			}
-			return;
-		}
-		else if(urlLong.matches(".*httpc post?.*")) {
-			postReq = true;
-			
-			if(urlLong.matches(".*-o.*")) {
-				isTextOut = true;
-				String temp = StringUtils.substringAfter(urlLong, "-o ");
-				outputFileName = StringUtils.substringBefore(temp, " ");
-			}
-			if(urlLong.matches(".*-v.*")) {
-				Post.setVerbose(true);
-			}
-			if(urlLong.matches(".*-h.*")) {
-				Post.setHeaders(true);
-				Post.addHeaders(urlLong);
-			}
-			if(urlLong.matches(".*-d.*")) {
-				Post.setInlineData(true);
-				Post.addData(urlLong);
-			}
-			if(urlLong.matches(".*-f.*")) {
-				Post.setFileName(true);
-				Post.addFile(urlLong);
-				System.out.println("fileName"); // remove once working
-			}
-		}
-	}
-	
 	public static void main(String[] args) throws Exception {
 		
 //		String urlLong = "httpc get http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
+		
 //		String urlLong = "httpc post http://httpbin.org/post";
 //		String urlLong = "httpc post -v -h Content-Type:application/json http://httpbin.org/post";
 //		String urlLong = "httpc post -h Content-Type:application/json http://httpbin.org/post";
 //		String urlLong = "httpc post -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
-		String urlLong = "httpc post -v -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
+//		String urlLong = "httpc post -v -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
+//		String urlLong = "httpc post -v -f fileData.txt http://httpbin.org/post";
 		
 		// bonus textfile output
 //		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
 
+		// local server requests
+		String urlLong = "httpc get -v -h Content-Type:application/json -h Connection:Keep-Alive http://localhost:80/";
+		
 		parseURL(urlLong);
 		if(isTextOut) {
 			try {
@@ -104,4 +63,50 @@ public class httpc {
 		}
 		System.out.println("Program terminated normally");
 	}
+	
+	public static void parseURL(String urlLong) {
+			
+			if(urlLong.matches(".*httpc get?.*")) {
+				getReq = true;
+				
+				if(urlLong.matches(".*-o.*")) {
+					isTextOut = true;
+					String temp = StringUtils.substringAfter(urlLong, "-o ");
+					outputFileName = StringUtils.substringBefore(temp, " ");
+				}
+				if(urlLong.matches(".*-v.*")) {
+					Get.setVerbose(true);
+					System.out.println("verbose");
+				}
+				if(urlLong.matches(".*-h.*")) {
+					Get.setHeaders(true);
+					Get.addHeaders(urlLong);
+				}
+				return;
+			}
+			else if(urlLong.matches(".*httpc post?.*")) {
+				postReq = true;
+				
+				if(urlLong.matches(".*-o.*")) {
+					isTextOut = true;
+					String temp = StringUtils.substringAfter(urlLong, "-o ");
+					outputFileName = StringUtils.substringBefore(temp, " ");
+				}
+				if(urlLong.matches(".*-v.*")) {
+					Post.setVerbose(true);
+				}
+				if(urlLong.matches(".*-h.*")) {
+					Post.setHeaders(true);
+					Post.addHeaders(urlLong);
+				}
+				if(urlLong.matches(".*-d.*")) {
+					Post.setInlineData(true);
+					Post.addData(urlLong);
+				}
+				if(urlLong.matches(".*-f.*")) {
+					Post.setIsFile(true);
+					Post.readFile(urlLong);
+				}
+			}
+		}
 }
