@@ -35,8 +35,6 @@ public class httpfs {
                 // Prepare response
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);                
                 String response = "HTTP/1.0 200 OK\r\n";
-                
-    	        //Read the files in a directory (https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder)
 
 //                doDirectory(out, path, response);
 //                doGet(out, reader, path, response);
@@ -98,7 +96,16 @@ public class httpfs {
         out.flush();
 	}
 	
-	private static void doPost() {
-		
+	private static void doPost(PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
+		String line;
+		boolean isBody = false;
+		while((line=reader.readLine()) != null){
+			if(line.equals("")) {
+				isBody = true;
+			}
+			if(isBody) {
+				//write to file
+			}	
+		}
 	}
 }
