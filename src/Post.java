@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -18,9 +19,11 @@ public class Post {
 	private static boolean verbose = false;
 	private static boolean headers = false;
 	private static ArrayList<String> headerArr = new ArrayList<String>();
+	
 	private static boolean inlineData = false;
 	private static String dataContent = "";
-	private static boolean isFile = false;
+	
+	private static boolean hasFile = false;
 	private static String fileName = "";
 	private static String fileContents = "";
 	
@@ -40,14 +43,14 @@ public class Post {
 	public static boolean isInlineData() {
 		return inlineData;
 	}
-	public static void setInlineData(boolean inlineData) {
-		Post.inlineData = inlineData;
+	public static void setInlineData(boolean hasData) {
+		Post.inlineData = hasData;
 	}
 	public static boolean isFileName() {
-		return isFile;
+		return hasFile;
 	}
-	public static void setIsFile(boolean fileName) {
-		Post.isFile = fileName;
+	public static void setIsFile(boolean hasFile) {
+		Post.hasFile = hasFile;
 	}
 	
 	// Make POST request
@@ -68,11 +71,11 @@ public class Post {
 		// send content-length of inline data or file
 		if(inlineData)
 			out.println("Content-Length: " + dataContent.length());
-//		else if(isFile)
+		else if(hasFile)
 			out.println("Content-Length: " + fileContents.length());
 		// if there is a header command, return specific key and value
 		if(headers) {
-			for(int i =0; i < headerArr.size(); i++) {
+			for(int i = 0; i < headerArr.size(); i++) {
 				out.println(headerArr.get(i).toString());
 			}
 		}
@@ -83,7 +86,7 @@ public class Post {
 		if(inlineData) {
 			out.println(dataContent);
 		}
-		else if(isFile) {
+		else if(hasFile) {
 			out.println(fileContents);
 		}
 		out.flush();
@@ -128,16 +131,16 @@ public class Post {
 		fileName = StringUtils.substringBefore(temp, " ");
 		
 		try {
-			File inputFileName = new File("" + fileName);
-			if(!inputFileName.exists())
-				System.out.println("The file : " + fileName + " does not exist.");
+//			File inputFile = new File(fileName);
+//			if(!inputFile.exists())
+//				System.out.println("The file : " + fileName + " does not exist.");
 			
-			BufferedReader inputWriter = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileName)));
+			BufferedReader inputReader = new BufferedReader(new FileReader(fileName));
 			
-			while((temp = inputWriter.readLine()) != null) {
+			while((temp = inputReader.readLine()) != null) {
 				fileContents += temp;				
 			}
-			inputWriter.close();
+			inputReader.close();
 		}
 		catch(IOException e) {
 			e.printStackTrace();

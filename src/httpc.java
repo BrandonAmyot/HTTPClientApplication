@@ -18,18 +18,19 @@ public class httpc {
 //		String urlLong = "httpc get -v http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
 //		String urlLong = "httpc get -v -h Content-Type:application/json http://httpbin.org/get?course=networking&assignment=1";
+		
 //		String urlLong = "httpc post http://httpbin.org/post";
 //		String urlLong = "httpc post -v -h Content-Type:application/json http://httpbin.org/post";
 //		String urlLong = "httpc post -h Content-Type:application/json http://httpbin.org/post";
 //		String urlLong = "httpc post -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
 //		String urlLong = "httpc post -v -h Content-Type:application/json --d'{\"Assignment\": 1}' http://httpbin.org/post";
-//		String urlLong = "httpc post -v --d'{\"Assignment\": 1}' http://httpbin.org/post";
-		String urlLong = "httpc post -v -f fileData.txt http://httpbin.org/get?course=networking&assignment=1";
+//		String urlLong = "httpc post -v -f fileData.txt http://httpbin.org/post";
 		
 		// bonus textfile output
 //		String urlLong = "httpc get -v -o hello.txt http://httpbin.org/get?course=networking&assignment=1";
 
-//		String urlLong = "httpc get -v -h Content-Type:application/json -h Connection:Keep-Alive http://localhost:80/";
+		// local server requests
+		String urlLong = "httpc get -v -h Content-Type:application/json -h Connection:Keep-Alive http://localhost:80/";
 		
 		parseURL(urlLong);
 		if(isTextOut) {
