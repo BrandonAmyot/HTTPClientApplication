@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -14,12 +15,34 @@ public class httpfs {
 		
 		String tempPort = StringUtils.substringAfter(userPath, "-p ");
 		String stringPort = StringUtils.substringBefore(tempPort, " ");
-		
 		int port = Integer.parseInt(stringPort);
+		
+		
+		//FIX THIS, make it so that only ../directory is used
+		String tempPath = StringUtils.substringAfter(userPath, "-d ");
+		int last = tempPath.lastIndexOf("/");
+		String path = StringUtils.substringBefore(tempPath, Character.toString(tempPath.charAt(last)));
+		
+		System.out.println(path);
 		
 		try {
 		ServerSocket server = new ServerSocket(port);
         System.out.println("Listening for connection on port " + server.getLocalPort() + "...");
+        
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+          if (listOfFiles[i].isFile()) {
+            System.out.println("File " + listOfFiles[i].getName());
+          } else if (listOfFiles[i].isDirectory()) {
+            System.out.println("Directory " + listOfFiles[i].getName());
+          }
+        }
+        
+        
+        
+        
             while (true) {
                 Socket clientSocket = server.accept();
                 InputStreamReader input =  new InputStreamReader(clientSocket.getInputStream());
