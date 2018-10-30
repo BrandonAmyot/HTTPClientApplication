@@ -76,7 +76,6 @@ public class httpc {
 				}
 				if(urlLong.matches(".*-v.*")) {
 					Get.setVerbose(true);
-					System.out.println("verbose");
 				}
 				if(urlLong.matches(".*-h.*")) {
 					Get.setHeaders(true);

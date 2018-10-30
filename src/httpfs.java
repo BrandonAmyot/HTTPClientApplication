@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,7 +40,7 @@ public class httpfs {
 
 //                doDirectory(out, path, response);
 //                doGet(out, reader, path, response);
-                doPost();
+                doPost(out, reader, path, response);
                 
                 clientSocket.close();
             }
@@ -97,15 +99,26 @@ public class httpfs {
 	}
 	
 	private static void doPost(PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
-		String line;
+		String line = reader.readLine();
+        String tempFileName = StringUtils.substringAfter(line, " /");
+		String fileName = StringUtils.substringBefore(tempFileName, " ");
+		
+		// prepare file for output
+		File outputFile = new File("" + fileName);
+		if(!outputFile.exists())
+			outputFile.createNewFile();
+		PrintStream outputWriter = new PrintStream(new FileOutputStream(outputFile, false));
+		System.setOut(outputWriter);
+		
 		boolean isBody = false;
-		while((line=reader.readLine()) != null){
+		while((line = reader.readLine()) != null){
 			if(line.equals("")) {
 				isBody = true;
 			}
-			if(isBody) {
-				//write to file
+			else if(isBody) {
+				System.out.println(line);
 			}	
 		}
+		out.println(response);
 	}
 }

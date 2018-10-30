@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,8 +16,8 @@ public class simpleClient {
 	public static void main(String[] args) throws IOException {
 		
 //		String userLong = "httpfs get /";
-		String userLong = "httpfs get /foo";
-//		String userLong = "httpfs post /bar";
+//		String userLong = "httpfs get /foo";
+		String userLong = "httpfs post /bar";
 		
 		String host = "localhost";
 		int port = 8080;
@@ -82,9 +83,11 @@ public class simpleClient {
 	}
 	
 	private static void runPost(String fileName, PrintWriter out, Socket conn) throws IOException{
+		Date dateNow = new Date();
 		out.println("POST /" + fileName + " HTTP/1.0");
 		out.println("Host: localhost");
 		out.println();
+		out.println("Replace content with this body created: " + dateNow.toString());
 		out.flush();
 			
 		// Print the response
