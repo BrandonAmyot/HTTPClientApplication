@@ -21,27 +21,49 @@ public class simpleClient {
 
 	private static void runClient(Socket conn) throws IOException {
 		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))); 	
-			
-			out.println("GET /" + fileName + " HTTP/1.0");
-			out.println("Host: localhost");
-			out.println();
-			out.flush();
-				
-			// Print the response
-			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
-			
-			String response;
-			while((response = in.readLine()) != null) {
-				System.out.println(response);
-			}				
+			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))); 					
 		
-			in.close();
+			runGet(fileName, out, conn);
+			
 			conn.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static void runGet(String fileName, PrintWriter out, Socket conn) throws IOException{
+		out.println("GET /" + fileName + " HTTP/1.0");
+		out.println("Host: localhost");
+		out.println();
+		out.flush();
+			
+		// Print the response
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+		
+		String response;
+		while((response = in.readLine()) != null) {
+			System.out.println(response);
+		}
+		
+		in.close();
+	}
+	
+	private static void runPost(String fileName, PrintWriter out, Socket conn) throws IOException{
+		out.println("POST /" + fileName + " HTTP/1.0");
+		out.println("Host: localhost");
+		out.println();
+		out.flush();
+			
+		// Print the response
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream())); 
+		
+		String response;
+		while((response = in.readLine()) != null) {
+			System.out.println(response);
+		}
+		
+		in.close();
 	}
 
 }
