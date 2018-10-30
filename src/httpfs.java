@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 public class httpfs {
 	public static void main(String[] args) {
 		
-		String serverDetails = "httpfs -p 8080 -d ../directory";
+		String serverDetails = "httpfs -p 8080 -d directory";
 		
 		String tempPort = StringUtils.substringAfter(serverDetails, "-p ");
 		String stringPort = StringUtils.substringBefore(tempPort, " ");
