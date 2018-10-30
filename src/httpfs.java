@@ -18,21 +18,17 @@ public class httpfs {
 		int port = Integer.parseInt(stringPort);
 		
 		String path = serverDetails.substring(serverDetails.lastIndexOf(" ")+1);
-		System.out.println(path);
 		
 		try {
 		ServerSocket server = new ServerSocket(port);
         System.out.println("Listening for connection on port " + server.getLocalPort() + "...");
+        System.out.println("Files in directory " + path);
         
+        //Read the files in a directory (https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder)
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
-
         for (int i = 0; i < listOfFiles.length; i++) {
-          if (listOfFiles[i].isFile()) {
             System.out.println("File " + listOfFiles[i].getName());
-          } else if (listOfFiles[i].isDirectory()) {
-            System.out.println("Directory " + listOfFiles[i].getName());
-          }
         }
         
         
