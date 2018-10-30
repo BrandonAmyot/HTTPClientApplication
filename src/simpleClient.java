@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.nio.channels.SocketChannel;
 
 public class simpleClient {
 
@@ -16,6 +13,7 @@ public class simpleClient {
 	public static void main(String[] args) throws IOException {
 		String host = "localhost";
 		int port = 8080;
+		fileName = "foo.txt";
 		
 		Socket conn = new Socket(host, port);
 		runClient(conn);
