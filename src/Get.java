@@ -35,12 +35,8 @@ public class Get {
 		URL url = new URL(urlShort);
 
 		String hostName = url.getHost();
-//		int port = 80;
-		
-//		String hostName = "localhost";
 		int port = 80;
-		//String url = "127.0.0.1";
-		
+				
 		Socket mySocket = new Socket(hostName, port);
 			
 		// send request
@@ -54,12 +50,11 @@ public class Get {
 			for(int i =0; i < headerArr.size(); i++) {
 				out.println(headerArr.get(i).toString());
 			}
-//			out.println(header);
 		}
 		out.println();
 		out.flush();
 			
-		// Print the get request
+		// Print the response
 		BufferedReader in = new BufferedReader(new InputStreamReader(mySocket.getInputStream())); 
 		
 		String response;
@@ -81,15 +76,12 @@ public class Get {
 	}
 	
 	public static void addHeaders(String url) {
-		int counter = 0;
 		for(int i=0; i<url.length(); i++) {
 			
 			if(url.charAt(i)== '-' && url.charAt(i+1) == 'h') {
 				String temp = StringUtils.substring(url, i+3);
 				String header = StringUtils.substringBefore(temp, " ");
 				headerArr.add(header);
-				counter++;
-				
 			}
 		}
 	}
