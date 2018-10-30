@@ -25,61 +25,80 @@ public class httpfs {
 	        System.out.println("Listening for connection on port " + server.getLocalPort() + "...");
 	        System.out.println("Files in directory " + path);
 	        
-	        //Read the files in a directory (https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder)
-	        File folder = new File(path);
-	        File[] listOfFiles = folder.listFiles();
-	        for (int i = 0; i < listOfFiles.length; i++) {
-	            System.out.println("File " + listOfFiles[i].getName());
-	        }
+
         
             while (true) {
                 Socket clientSocket = server.accept();
                 InputStreamReader input =  new InputStreamReader(clientSocket.getInputStream());
                 BufferedReader reader = new BufferedReader(input);
-                String line = reader.readLine();
                 
                 // Prepare response
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);                
                 String response = "HTTP/1.0 200 OK\r\n";
                 
-                String tempFileName = StringUtils.substringAfter(line, " /");
-        		String fileName = StringUtils.substringBefore(tempFileName, " ");
-                if(fileName != null) {
-                	try {
-                		File inputFile = new File(path + "/" + fileName);
-            			if(!inputFile.exists()) {            				
-            				response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
-//            				out.println(response);
-            			}
-            			
-            			BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
-            			//BufferedReader fileReader = new BufferedReader(new FileReader("../directory/foo.txt"));
-            			while((line = fileReader.readLine()) != null) {
-            				response += line;				
-            			}
-            			fileReader.close();
-            		}
-            		catch(IOException e) {
-            			e.printStackTrace();
-            		}
-                }
-                else {
-                	response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
-                	while (!line.isEmpty()) {
-                		System.out.println(line);
-                		response += line + "\n";
-                		line = reader.readLine();
-                	}
-                }
-                // send response
-                out.println(response);
+    	        //Read the files in a directory (https://stackoverflow.com/questions/5694385/getting-the-filenames-of-all-files-in-a-folder)
+
+//                doDirectory(out, path, response);
+//                doGet(out, reader, path, response);
+                doPost();
                 
-                out.flush();
                 clientSocket.close();
             }
         }
         catch (IOException e) {
         	System.out.println(e);
         }
+	}
+	
+	private static void doDirectory(PrintWriter out, String path, String response) throws IOException{
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        for (int i = 0; i < listOfFiles.length; i++) {
+             response += (listOfFiles[i].getName()) + "\n"; 
+        }
+        
+        out.println(response);
+	}
+	
+	private static void doGet(PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
+		String line = reader.readLine();
+        String tempFileName = StringUtils.substringAfter(line, " /");
+		String fileName = StringUtils.substringBefore(tempFileName, " ");
+        if(fileName != null) {
+        	try {
+        		File inputFile = new File(path + "/" + fileName);
+    			if(!inputFile.exists()) {            				
+    				response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
+//    				out.println(response);
+    			}
+    			
+    			BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
+    			//BufferedReader fileReader = new BufferedReader(new FileReader("../directory/foo.txt"));
+    			while((line = fileReader.readLine()) != null) {
+    				response += line;				
+    			}
+    			fileReader.close();
+    		}
+    		catch(IOException e) {
+    			e.printStackTrace();
+    		}
+        }
+        else {
+        	response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
+        	while (!line.isEmpty()) {
+        		System.out.println(line);
+        		response += line + "\n";
+        		line = reader.readLine();
+        	}
+        }
+        
+        // send response
+        out.println(response);
+        
+        out.flush();
+	}
+	
+	private static void doPost() {
+		
 	}
 }
