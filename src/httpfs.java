@@ -11,13 +11,13 @@ import org.apache.commons.lang3.StringUtils;
 public class httpfs {
 	public static void main(String[] args) {
 		
-		String userPath = "httpfs get -p 80 -d ../directory";
+		String serverDetails = "httpfs -p 80 -d ../directory";
 		
-		String tempPort = StringUtils.substringAfter(userPath, "-p ");
+		String tempPort = StringUtils.substringAfter(serverDetails, "-p ");
 		String stringPort = StringUtils.substringBefore(tempPort, " ");
 		int port = Integer.parseInt(stringPort);
 		
-		String path = userPath.substring(userPath.lastIndexOf(" ")+1);
+		String path = serverDetails.substring(serverDetails.lastIndexOf(" ")+1);
 		System.out.println(path);
 		
 		try {
