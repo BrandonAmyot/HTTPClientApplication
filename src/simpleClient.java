@@ -15,9 +15,11 @@ public class simpleClient {
 	
 	public static void main(String[] args) throws IOException {
 		
-//		String userLong = "httpfs get /";
+		String userLong = "httpfs get /";
 //		String userLong = "httpfs get /foo";
-		String userLong = "httpfs post /bar";
+//		String userLong = "httpfs get /boo";
+//		String userLong = "httpfs post /bar";
+//		String userLong = "httpfs post /far";
 		
 		String host = "localhost";
 		int port = 8080;
@@ -49,7 +51,7 @@ public class simpleClient {
 	}
 
 	private static void runDirectory(PrintWriter out, Socket conn) throws IOException{
-		out.println("GET HTTP/1.0");
+		out.println("GET / HTTP/1.0");
 		out.println();
 		out.flush();
 		

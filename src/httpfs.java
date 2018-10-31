@@ -25,22 +25,24 @@ public class httpfs {
 		try {
 			ServerSocket server = new ServerSocket(port);
 	        System.out.println("Listening for connection on port " + server.getLocalPort() + "...");
-	        System.out.println("Files in directory " + path);
-	        
-
         
             while (true) {
                 Socket clientSocket = server.accept();
                 InputStreamReader input =  new InputStreamReader(clientSocket.getInputStream());
                 BufferedReader reader = new BufferedReader(input);
+                String line = reader.readLine();
                 
                 // Prepare response
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);                
-                String response = "HTTP/1.0 200 OK\r\n";
-
-//                doDirectory(out, path, response);
-//                doGet(out, reader, path, response);
-                doPost(out, reader, path, response);
+                String response = "HTTP/1.0 200 OK\r\n";   
+                String method = StringUtils.substringBefore(line, " /");
+                
+                if(method.equalsIgnoreCase("get")) {
+                	doGet(line, out, reader, path, response);
+                }
+                else if(method.equalsIgnoreCase("post")) {
+                	doPost(line, out, reader, path, response);
+                }
                 
                 clientSocket.close();
             }
@@ -50,46 +52,35 @@ public class httpfs {
         }
 	}
 	
-	private static void doDirectory(PrintWriter out, String path, String response) throws IOException{
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-             response += (listOfFiles[i].getName()) + "\n"; 
-        }
-        
-        out.println(response);
-	}
-	
-	private static void doGet(PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
-		String line = reader.readLine();
+	private static void doGet(String line, PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
+		
         String tempFileName = StringUtils.substringAfter(line, " /");
 		String fileName = StringUtils.substringBefore(tempFileName, " ");
-        if(fileName != null) {
+		System.out.println(fileName);
+        if(fileName.equals("")) {
+        	System.out.println("hello");
+            File folder = new File(path);
+            File[] listOfFiles = folder.listFiles();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                 response += (listOfFiles[i].getName()) + "\n"; 
+            }
+        }
+        else {
         	try {
         		File inputFile = new File(path + "/" + fileName);
-    			if(!inputFile.exists()) {            				
+    			if(!inputFile.exists()) {      
     				response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
-//    				out.println(response);
     			}
     			
     			BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
-    			//BufferedReader fileReader = new BufferedReader(new FileReader("../directory/foo.txt"));
     			while((line = fileReader.readLine()) != null) {
     				response += line;				
     			}
     			fileReader.close();
     		}
     		catch(IOException e) {
-    			e.printStackTrace();
+    			System.out.println("File was not found");
     		}
-        }
-        else {
-        	response = "HTTP/1.0 404: The file " + fileName + " not found.\r\n";
-        	while (!line.isEmpty()) {
-        		System.out.println(line);
-        		response += line + "\n";
-        		line = reader.readLine();
-        	}
         }
         
         // send response
@@ -98,15 +89,15 @@ public class httpfs {
         out.flush();
 	}
 	
-	private static void doPost(PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
-		String line = reader.readLine();
+	private static void doPost(String line, PrintWriter out, BufferedReader reader, String path, String response) throws IOException{
         String tempFileName = StringUtils.substringAfter(line, " /");
-		String fileName = StringUtils.substringBefore(tempFileName, " ");
+        String fileName = StringUtils.substringBefore(tempFileName, " ");
 		
 		// prepare file for output
-		File outputFile = new File("" + fileName);
-		if(!outputFile.exists())
-			outputFile.createNewFile();
+		File outputFile = new File(path + "/" + fileName);
+		outputFile.getParentFile().mkdirs();
+		outputFile.createNewFile();
+
 		PrintStream outputWriter = new PrintStream(new FileOutputStream(outputFile, false));
 		System.setOut(outputWriter);
 		
@@ -120,5 +111,7 @@ public class httpfs {
 			}	
 		}
 		out.println(response);
+		
+		out.flush();
 	}
 }
